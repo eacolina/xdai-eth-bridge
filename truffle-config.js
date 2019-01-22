@@ -54,6 +54,12 @@ module.exports = {
       },
       network_id:"*",
     },
+    ropsten: {
+      provider: function() {
+        return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/tRmXv2MPxIZMNr29IaYX ")
+      },
+      network_id: 3,
+    },
 
     // Another network with more advanced options...
     // advanced: {
