@@ -30,5 +30,4 @@ contract Emitter {
         poolOwner = newPool;
         emit PoolChanged(oldPool, newPool);
     }
-
 }
