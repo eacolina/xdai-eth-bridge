@@ -18,11 +18,15 @@
  *
  */
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
+var HDWalletProvider = require('truffle-hdwallet-provider');
+
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
-const mnemonic = "bag various stumble orchard print plate relief gossip defense spirit during raven";
+if(process.env.NODE_ENV != 'production'){
+  require('dotenv').load()
+}
+const menemonic = process.env.TRUFFLE_WALLET_MNEMONIC;
 
 module.exports = {
   /**
@@ -50,7 +54,7 @@ module.exports = {
 
     xdai: {
       provider: function(){
-        return new HDWalletProvider(mnemonic, "https://dai.poa.network")
+        return new HDWalletProvider(mnemonic, process.env.XDAI_ENDPOINT)
       },
       network_id:"*",
     },
@@ -60,6 +64,16 @@ module.exports = {
       },
       network_id: 3,
     },
+    mainnet:{
+      provider: function(){
+        return new HDWalletProvider(menemonic, process.env.ETH_ENDPOINT)
+      },
+      network_id: 1,
+      gas: 6000000,           // Gas sent with each transaction (default: ~6700000)
+      gasPrice: 20000000000,  // 20 gwei (in wei) (default: 100 gwei)
+
+    }
+    
 
     // Another network with more advanced options...
     // advanced: {
