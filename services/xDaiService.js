@@ -17,7 +17,7 @@ var web3_xdai
 var utils 
 var EmitterABI = EmitterArtifacts.abi
 var xDaiEmitterContract
-var lastEventBlock_dai = 1910370// always update this
+var lastEventBlock_dai = 1924320// always update this
 
 const xdaiEndpoint = process.env.XDAI_ENDPOINT
 var xdai_account 
@@ -61,7 +61,6 @@ async function xDaifundsSentCb(err, res){
         }
     }
 }
-
 
 function xDaiPollEvents(contractInstance, event, fromBlock, cb){
     // Get all the past "FundsSent" events 

@@ -16,7 +16,7 @@ var xdaiService = require('./xDaiService')
 var web3_eth
 var utils 
 var EmitterABI = EmitterArtifacts.abi
-var lastEventBlock_eth = 7146113// always update this
+var lastEventBlock_eth = 7149820// always update this 7149764 7149814
 
 const ethEndpoint = process.env.ETH_ENDPOINT
 var eth_account
