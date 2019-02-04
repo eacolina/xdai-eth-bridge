@@ -18,11 +18,15 @@
  *
  */
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
+var HDWalletProvider = require('truffle-hdwallet-provider');
+
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
-const mnemonic = "bag various stumble orchard print plate relief gossip defense spirit during raven";
+if(process.env.NODE_ENV != 'production'){
+  require('dotenv').load()
+}
+const menemonic = process.env.TRUFFLE_WALLET_MNEMONIC;
 
 module.exports = {
   /**
@@ -34,7 +38,7 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
-
+  test_directory:'test_solidity',
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -45,12 +49,12 @@ module.exports = {
     development: {
      host: "127.0.0.1",     // Localhost (default: none)
      port: 7545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
+     network_id: "5777",       // Any network (default: none)
     },
 
     xdai: {
       provider: function(){
-        return new HDWalletProvider(mnemonic, "https://dai.poa.network")
+        return new HDWalletProvider(mnemonic, process.env.XDAI_ENDPOINT)
       },
       network_id:"*",
     },
@@ -60,6 +64,16 @@ module.exports = {
       },
       network_id: 3,
     },
+    mainnet:{
+      provider: function(){
+        return new HDWalletProvider(menemonic, process.env.ETH_ENDPOINT)
+      },
+      network_id: 1,
+      gas: 6000000,           // Gas sent with each transaction (default: ~6700000)
+      gasPrice: 20000000000,  // 20 gwei (in wei) (default: 100 gwei)
+
+    }
+    
 
     // Another network with more advanced options...
     // advanced: {
