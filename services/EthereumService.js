@@ -7,16 +7,18 @@ module.exports = {
     init:initETHService,
     sendTX:forwardFundsETH
 }
-
+var Utils = require('./../utils/utils')
 var EmitterArtifacts = require("./../build/contracts/Emitter.json")
 var HDWalletProvider = require("truffle-hdwallet-provider")
 var priceFeed = require('./PriceFeedSerivce')
 var Web3 = require('Web3')
 var xdaiService = require('./xDaiService')
+const configFile = require('./../config.json')
 var web3_eth
 var utils 
 var EmitterABI = EmitterArtifacts.abi
-var lastEventBlock_eth = 7149820// always update this 7149764 7149814
+var lastEventBlock_eth = configFile.ETH_LAST_BLOCK// always update this
+
 
 const ethEndpoint = process.env.ETH_ENDPOINT
 var eth_account
@@ -56,6 +58,8 @@ async function eth_fundsSentCb(err, res){
             }).catch((err) => {
                 console.error("There was an error sending the funds: ", err,"\n")
             })
+            configFile.ETH_LAST_BLOCK = lastEventBlock_eth
+            Utils.updateConfigFile(configFile)
         }
     }
 }
