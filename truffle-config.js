@@ -53,7 +53,7 @@ module.exports = {
     },
     mainnet:{
       provider: function(){
-        return new HDWalletProvider(menemonic, process.env.ETH_ENDPOINT)
+        return new HDWalletProvider(mnemonic, process.env.ETH_ENDPOINT)
       },
       network_id: 1,
       gas: 6000000,           // Gas sent with each transaction (default: ~6700000)
