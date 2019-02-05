@@ -60,8 +60,8 @@ async function xDaifundsSentCb(err, res){
             }).catch((err) => {
                 console.error("There was an error sending the funds: ", err,"\n")
             })
-            configFile.XDAI_LAST_BLOCK = lastEventBlock_dai
-            Utils.updateConfigFile(configFile)
+            configFile.XDAI_LAST_BLOCK = lastEventBlock_dai // create the new object
+            Utils.updateConfigFile(configFile)// save the new block number to the file
         }
     }
 }

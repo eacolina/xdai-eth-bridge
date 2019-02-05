@@ -60,11 +60,12 @@ async function getFilteredETH_price(){
         prices.push(price) // push price to array
     }
     prices = prices.sort() //sort price array
-    // get the median pf the prices
-    if (prices.length % 2 == 0){
-        return (prices[prices.length/2 - 1] + prices[prices.length/2])/2
+    let mid = Math.floor(prices.length/2)
+    // get the median of the prices
+    if (mid == 0){
+        return (prices[mid - 1] + prices[mid])/2
     }
-    return (prices[parseInt(prices.length/2)])
+    return (prices[mid])
 }
 
 module.exports = {
