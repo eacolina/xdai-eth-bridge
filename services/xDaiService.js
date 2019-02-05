@@ -8,16 +8,18 @@ module.exports = {
     sendTx:forwardFundsDAI
 }
 
+var Utils = require('./../utils/utils')
 var HDWalletProvider = require("truffle-hdwallet-provider")
 var EmitterArtifacts = require("./../build/contracts/Emitter.json")
 var priceFeed = require('./PriceFeedSerivce')
 var Web3 = require('Web3')
 var ETHService = require('./EthereumService')
 var web3_xdai
-var utils 
+var utils
+const configFile = require('./../config.json')
 var EmitterABI = EmitterArtifacts.abi
 var xDaiEmitterContract
-var lastEventBlock_dai = 1924320// always update this
+var lastEventBlock_dai = configFile.XDAI_LAST_BLOCK// always update this
 
 const xdaiEndpoint = process.env.XDAI_ENDPOINT
 var xdai_account 
@@ -58,6 +60,8 @@ async function xDaifundsSentCb(err, res){
             }).catch((err) => {
                 console.error("There was an error sending the funds: ", err,"\n")
             })
+            configFile.XDAI_LAST_BLOCK = lastEventBlock_dai
+            Utils.updateConfigFile(configFile)
         }
     }
 }
