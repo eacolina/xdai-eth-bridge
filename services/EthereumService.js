@@ -78,5 +78,5 @@ function calculateAmountOfDAI(ETH_amount,priceOfETH){
 // send eth
 async function forwardFundsETH(amount, dest_account){
     var nonce = await web3_eth.eth.getTransactionCount(eth_account)
-   return web3_eth.eth.sendTransaction({from:eth_account, to:dest_account, value: amount,gas:210000, gasPrice:20000000000, nonce:nonce})
+   return web3_eth.eth.sendTransaction({from:eth_account, to:dest_account, value:""+Math.round(amount),gas:210000, gasPrice:20000000000, nonce:nonce})
 }

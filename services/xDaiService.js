@@ -53,9 +53,14 @@ async function xDaifundsSentCb(err, res){
             let daiAmount = latest_event.returnValues.value // parse amount of DAI to convert
             let priceOfETH = await priceFeed.getFilteredETH_price() // get price of ETH
             let ethAmount = calculateAmountOfETH(daiAmount, priceOfETH) // convert from DAI to ETH
+
+            let cut = ethAmount * 0.1
+            console.log("Taking a cut of "+cut+" ETH from the total "+ethAmount)
+            ethAmount-=cut
+
             let sender = latest_event.returnValues.sender
             let res = ETHService.sendTX(ethAmount, sender).then((res) => {
-                console.log("Just sent", utils.fromWei(ethAmount.toString()), "ETH to account", sender,"@",priceOfETH,"/USD"," \n")
+                console.log("Just sent", utils.fromWei(""+Math.round(ethAmount)), "ETH to account", sender,"@",priceOfETH,"/USD"," \n")
                 console.log('TxHash:',res.transactionHash)
             }).catch((err) => {
                 console.error("There was an error sending the funds: ", err,"\n")
