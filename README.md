@@ -3,9 +3,9 @@
 This service works as bridge between POA's xDai network and the Ethereum mainnet.
 
 ## How it works
-- There are two proxy contracts, one one Ethereum and one on xDai. 
+- There are two proxy contracts, one on Ethereum and one on xDai.
 - When the function `convertFunds` is called on either one of them it will trigger the event `FundsSent`. And it will redirect the sent funds to a liquidity pool set at deployment time.
-- A service will pick up those events and it's values. It will convert the sent amount to the correspoding token based on the current price of ETH/USD and send the funds to the same address on the other chain.
+- A service will pick up those events and its values. It will convert the sent amount to the corresponding token based on the current price of ETH/USD and send the funds to the same address on the other chain.
 
 ## How to run it
 
@@ -23,7 +23,7 @@ This service works as bridge between POA's xDai network and the Ethereum mainnet
     (await Emitter.new()).address
     .exit
     ```
-    This will return the address of the ETH proxy contract, paste this in a new environmment variable `ETH_EMITTER_ADDRESS`.
+    This will return the address of the ETH proxy contract, paste this in a new environment variable `ETH_EMITTER_ADDRESS`.
 
 - Deploy the contract on xDai, run the following:
     ```
@@ -31,6 +31,6 @@ This service works as bridge between POA's xDai network and the Ethereum mainnet
     (await Emitter.new()).address
     .exit
     ```
-    This will return the address of the xDai proxy contract, paste this in a new environmment variable `XDAI_EMITTER_ADDRESS`. 
-    
+    This will return the address of the xDai proxy contract, paste this in a new environment variable `XDAI_EMITTER_ADDRESS`.
+
     Now that both contracts are deployed, we can start the service with `npm start`.
