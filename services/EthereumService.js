@@ -11,11 +11,11 @@ var Utils = require('./../utils/utils')
 var EmitterArtifacts = require("./../build/contracts/Emitter.json")
 var HDWalletProvider = require("truffle-hdwallet-provider")
 var priceFeed = require('./PriceFeedSerivce')
-var Web3 = require('Web3')
+var Web3 = require('web3')
 var xdaiService = require('./xDaiService')
 const configFile = require('./../config.json')
 var web3_eth
-var utils 
+var utils
 var EmitterABI = EmitterArtifacts.abi
 var lastEventBlock_eth = configFile.ETH_LAST_BLOCK// always update this
 
@@ -26,9 +26,9 @@ async function initETHService() {
     console.log("Starting Ethereum service...")
     web3_eth = new Web3(ethProviderSetup()) // create a web3 object with ETH endpoint
     eth_account = (await web3_eth.eth.getAccounts())[0]  // TODO setup with proper account for ETH pool
-    utils = web3_eth.utils 
-    eth_EmitterContract = new web3_eth.eth.Contract(EmitterABI, process.env.ETH_EMITTER_ADDRESS, {from: eth_account})
-    eth_PollEvents()  // start polling for events on eth network
+    utils = web3_eth.utils
+    //eth_EmitterContract = new web3_eth.eth.Contract(EmitterABI, process.env.ETH_EMITTER_ADDRESS, {from: eth_account})
+    //eth_PollEvents()  // start polling for events on eth network
     console.log("Ethereum service started")
 }
 
@@ -65,9 +65,9 @@ async function eth_fundsSentCb(err, res){
 }
 
 function eth_PollEvents(contractInstance, event, fromBlock, cb){
-    // Get all the past "FundsSent" events 
+    // Get all the past "FundsSent" events
     eth_EmitterContract.getPastEvents("FundsSent",{fromBlock:lastEventBlock_eth, toBlock:'latest'},eth_fundsSentCb)
-    setTimeout(eth_PollEvents,150) // poll every 150ms 
+    setTimeout(eth_PollEvents,150) // poll every 150ms
 }
 // Simply return the amount of ETH given the DAI amount and current price of ETH
 // TODO: Watch out for decimal handeling with BN library
@@ -80,4 +80,3 @@ async function forwardFundsETH(amount, dest_account){
     var nonce = await web3_eth.eth.getTransactionCount(eth_account)
    return web3_eth.eth.sendTransaction({from:eth_account, to:dest_account, value: amount,gas:210000, gasPrice:20000000000, nonce:nonce})
 }
- 

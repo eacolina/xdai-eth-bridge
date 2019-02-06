@@ -1,11 +1,11 @@
-pragma solidity >=0.5.0 <0.6.0;
+pragma solidity 0.4.25;
 
 contract Emitter {
     event FundsSent(uint time, address indexed sender, uint value); // shoudl I log the time???
     event FundsFlushed(uint time, address indexed pool, uint value);
     event PoolChanged(address indexed oldPool, address indexed newPool);
 
-    address payable public poolOwner; // this is the address where the funds will be redirected for our liquidity pool
+    address public poolOwner; // this is the address where the funds will be redirected for our liquidity pool
     constructor() public{
         poolOwner = msg.sender; // set the address of the pool owner
     }
@@ -22,10 +22,10 @@ contract Emitter {
 
     function flush() isOwner public{
         poolOwner.transfer(address(this).balance); // send the funds to our pool
-        emit FundsFlushed(now, poolOwner, address(this).balance); // 
+        emit FundsFlushed(now, poolOwner, address(this).balance); //
     }
 
-    function updateOwner(address payable newPool) isOwner public{
+    function updateOwner(address newPool) isOwner public{
         address oldPool = poolOwner;
         poolOwner = newPool;
         emit PoolChanged(oldPool, newPool);

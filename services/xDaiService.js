@@ -12,7 +12,7 @@ var Utils = require('./../utils/utils')
 var HDWalletProvider = require("truffle-hdwallet-provider")
 var EmitterArtifacts = require("./../build/contracts/Emitter.json")
 var priceFeed = require('./PriceFeedSerivce')
-var Web3 = require('Web3')
+var Web3 = require('web3')
 var ETHService = require('./EthereumService')
 var web3_xdai
 var utils
@@ -22,7 +22,7 @@ var xDaiEmitterContract
 var lastEventBlock_dai = configFile.XDAI_LAST_BLOCK// always update this
 
 const xdaiEndpoint = process.env.XDAI_ENDPOINT
-var xdai_account 
+var xdai_account
 
 // Returns a wallet provider pointing to the xDai RPC
 function xDaiproviderSetup(){
@@ -33,7 +33,7 @@ async function initXDAIService() {
     console.log("Starting xDAI service...")
     web3_xdai = new Web3(xDaiproviderSetup()) // create a web3 object with xDai endpoint
     xdai_account = (await web3_xdai.eth.getAccounts())[0] // TODO setup with proper account for DAI pool
-    utils = web3_xdai.utils 
+    utils = web3_xdai.utils
     xDaiEmitterContract = new web3_xdai.eth.Contract(EmitterABI, process.env.XDAI_EMITTER_ADDRESS, {from: xdai_account})
     xDaiPollEvents() // start polling for events on xDai network
     console.log("xDai service started")
@@ -46,7 +46,7 @@ async function xDaifundsSentCb(err, res){
     } else {
         if(res.length == 0){return}
         var latest_event = res[res.length - 1] // get latest event
-        
+
         if (latest_event.blockNumber > lastEventBlock_dai){ // only update & process latest_block if the found one is higher
             lastEventBlock_dai = latest_event.blockNumber  //update block number
             let destAccount = latest_event.sender
@@ -67,9 +67,9 @@ async function xDaifundsSentCb(err, res){
 }
 
 function xDaiPollEvents(contractInstance, event, fromBlock, cb){
-    // Get all the past "FundsSent" events 
+    // Get all the past "FundsSent" events
     xDaiEmitterContract.getPastEvents("FundsSent",{fromBlock:lastEventBlock_dai, toBlock:'latest'},xDaifundsSentCb)
-    setTimeout(xDaiPollEvents,150) // poll every 150ms 
+    setTimeout(xDaiPollEvents,150) // poll every 150ms
 }
 function calculateAmountOfETH(DAI_amount,priceOfETH){
     return DAI_amount/priceOfETH
